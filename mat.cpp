@@ -18,31 +18,31 @@ class Matrix {
             n_row = size_x;
             n_col = size_y;
         }
-        Matrix multiply(Matrix &n) {
-            if ( n_col != n.n_row ) {
+        Matrix* multiply(Matrix *n) {
+            if ( n_col != n->n_row ) {
                 cout << "ERROR: Cannot multiply, dimensions don't match" << endl;
-                Matrix ret;
+                Matrix *ret;
                 return ret;
             }
-            Matrix ans(n_row, n.n_col);
+            Matrix *ans = new Matrix(n_row, n->n_col);
             for ( int i = 0; i < n_row; i++ ) {
-                for ( int j = 0; j < n.n_col; j++ ) {
+                for ( int j = 0; j < n->n_col; j++ ) {
                     double value = 0.0;
                     for ( int k = 0; k < n_col; k++ ) {
-                        value += mat[i][k] * n.get(k, j);
+                        value += mat[i][k] * n->get(k, j);
                     }
-                    ans.set(i, j, value);
+                    ans->set(i, j, value);
                 }
             }
 
             return ans;
         }
 
-        Matrix transpose() {
-            Matrix ans(n_col, n_row);
+        Matrix* transpose() {
+            Matrix* ans = new Matrix(n_col, n_row);
             for ( int i = 0; i < n_col; i++ ) {
                 for ( int j = 0; j < n_row; j++ ) {
-                    ans.set(i, j, mat[j][i]);
+                    ans->set(i, j, mat[j][i]);
                 }
             }
             return ans;
@@ -65,17 +65,17 @@ class Matrix {
             return true;
         }
 
-        friend ostream& operator<<(ostream& os, Matrix& mat) {
+        friend ostream& operator<<(ostream& os, Matrix *mat) {
             os << '[';
-            for ( int i = 0; i < mat.n_row; i++ ) {
+            for ( int i = 0; i < mat->n_row; i++ ) {
                 os << "[";
-                for ( int j = 0; j < mat.n_col; j++ ) {
-                    os << mat.get(i, j);
-                    if ( j < mat.n_col - 1 )
+                for ( int j = 0; j < mat->n_col; j++ ) {
+                    os << mat->get(i, j);
+                    if ( j < mat->n_col - 1 )
                         os << ", ";
                 }
                 os << "]";
-                if ( i < mat.n_row - 1 )
+                if ( i < mat->n_row - 1 )
                     os << ",\n";
 
             }
@@ -83,9 +83,9 @@ class Matrix {
             return os;
         }
 
-        // ~Matrix() {
-        //     for ( int i = 0; i < n_row; i++ ) 
-        //         delete[] mat[i];
-        //     delete[] mat;
-        // }
+        ~Matrix() {
+            for ( int i = 0; i < n_row; i++ ) 
+                delete[] mat[i];
+            delete[] mat;
+        }
 };
