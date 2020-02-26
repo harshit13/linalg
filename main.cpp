@@ -1,5 +1,5 @@
 #include <iostream>
-#include "linalg.cpp"
+#include "linalg.h"
 using namespace std;
 
 int main() {
@@ -25,10 +25,16 @@ int main() {
             n->set(i, j, mat2[i][j]);
     
     Matrix* mn = m->multiply(n);
+    cout << endl << "Matrix Product:" << endl << mn << endl;
+    try {
+        Matrix* mn1 = LinAlg::multiply(m->transpose(),n->transpose());
+        cout << endl <<  "Matrix Product:" << endl <<  mn1 << endl;
+    } catch (const char* msg) {
+        cerr << msg << endl;
+    }
     Matrix* m_t = m->transpose();
     Matrix* n_t = n->transpose();
-    cout << mn << endl;
-    cout << m_t << endl;
-    cout << n_t << endl;
+    cout << endl <<  "Transpose" << endl <<  m_t << endl;
+    cout << endl <<  "Transpose" << endl <<  n_t << endl;
     return 0;
 }
